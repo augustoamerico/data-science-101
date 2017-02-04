@@ -37,8 +37,8 @@ Vagrant.configure(2) do |config|
     gpg -a --export E084DAB9 | sudo apt-key add -
     mkdir -p /home/vagrant/R/lib
     #echo "export R_LIBS_USER="/usr/local/lib/R/site-library:/home/vagrant/R/lib"" | tee -a /home/vagrant/.bashrc
-    echo "export R_LIBS_USER=/home/vagrant/R/lib | tee -a /home/vagrant/.bashrc
-    echo "export R_LIBS_SITE=/home/vagrant/R/lib | tee -a /home/vagrant/.bashrc
+    echo "export R_LIBS_USER=/home/vagrant/R/lib" | tee -a /home/vagrant/.bashrc
+    echo "export R_LIBS_SITE=/home/vagrant/R/lib" | tee -a /home/vagrant/.bashrc
     echo "export PYTHONPATH=.:/home/vagrant/course" | tee -a /home/vagrant/.bashrc
     source /home/vagrant/.bashrc
   SHELL
