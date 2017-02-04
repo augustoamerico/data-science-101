@@ -27,6 +27,39 @@ Vagrant.configure(2) do |config|
     sed -i -e "s/#c.NotebookApp.token = '<generated>'/c.NotebookApp.token = ''/" /home/vagrant/.jupyter/jupyter_notebook_config.py
   SHELL
 
+  config.vm.provision "setup-r-env", type: "shell", privileged: false, inline: <<-SHELL
+    export DEBIAN_FRONTEND=noninteractive
+    # installing R
+    # add the R repository to apt-get the package
+    echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://mirrors.up.pt/ubuntu/ trusty-backports main restricted universe" | sudo tee -a /etc/apt/sources.list
+    gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9
+    gpg -a --export E084DAB9 | sudo apt-key add -
+    mkdir -p /home/vagrant/R/lib
+    #echo "export R_LIBS_USER="/usr/local/lib/R/site-library:/home/vagrant/R/lib"" | tee -a /home/vagrant/.bashrc
+    echo "export R_LIBS_USER=/home/vagrant/R/lib | tee -a /home/vagrant/.bashrc
+    echo "export R_LIBS_SITE=/home/vagrant/R/lib | tee -a /home/vagrant/.bashrc
+    echo "export PYTHONPATH=.:/home/vagrant/course" | tee -a /home/vagrant/.bashrc
+    source /home/vagrant/.bashrc
+  SHELL
+
+  config.vm.provision "installation-r-irkernel", type: "shell", privileged: false, inline: <<-SHELL
+    export DEBIAN_FRONTEND=noninteractive
+    source /home/vagrant/.bashrc
+    # installing R
+    sudo apt-get update
+    sudo apt-get install -y r-base r-base-dev
+    sudo apt-get -y build-dep libcurl4-gnutls-dev
+    sudo apt-get -y install libcurl4-gnutls-dev
+    # installing IRKernel 
+    # Rscript -e "{install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'curl' ,'devtools', 'uuid', 'digest'), repos='http://cran.us.r-project.org', lib='/home/vagrant/R/lib');library('devtools');devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'));IRkernel::installspec()}" --save
+    echo "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='http://cran.us.r-project.org', lib='/home/vagrant/R/lib')" | R --save 
+    #echo "{library('devtools'); devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'))}" | R --save
+    echo ".libPaths()" | R --save
+    echo "devtools::install_github('IRkernel/IRkernel')" | sudo R --save
+    echo "IRkernel::installspec()"
+  SHELL
+
   config.vm.provision "run-notebook", type: "shell", run: "always", privileged: false, inline: <<-SHELL
     export PYTHONPATH=.:/home/vagrant/course
     nohup jupyter-notebook --notebook-dir=/home/vagrant &
