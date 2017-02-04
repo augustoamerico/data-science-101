@@ -55,7 +55,7 @@ Vagrant.configure(2) do |config|
     # Rscript -e "{install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'curl' ,'devtools', 'uuid', 'digest'), repos='http://cran.us.r-project.org', lib='/home/vagrant/R/lib');library('devtools');devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'));IRkernel::installspec()}" --save
     echo "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='http://cran.us.r-project.org', lib='/home/vagrant/R/lib')" | R --save 
     echo "devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'))" | R --save
-    echo "IRkernel::installspec()"
+    echo "IRkernel::installspec()" | R --save
   SHELL
 
   config.vm.provision "run-notebook", type: "shell", run: "always", privileged: false, inline: <<-SHELL
