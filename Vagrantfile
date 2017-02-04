@@ -54,9 +54,7 @@ Vagrant.configure(2) do |config|
     # installing IRKernel 
     # Rscript -e "{install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'curl' ,'devtools', 'uuid', 'digest'), repos='http://cran.us.r-project.org', lib='/home/vagrant/R/lib');library('devtools');devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'));IRkernel::installspec()}" --save
     echo "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='http://cran.us.r-project.org', lib='/home/vagrant/R/lib')" | R --save 
-    #echo "{library('devtools'); devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'))}" | R --save
-    echo ".libPaths()" | R --save
-    echo "devtools::install_github('IRkernel/IRkernel')" | sudo R --save
+    echo "devtools::with_libpaths(new='/home/vagrant/R/lib', devtools::install_github('IRkernel/IRkernel'))" | R --save
     echo "IRkernel::installspec()"
   SHELL
 
