@@ -20,8 +20,8 @@ RUN sed -i -e "s/#c.NotebookApp.ip = 'localhost'/c.NotebookApp.ip = '0.0.0.0'/" 
 
 RUN sed -i -e "s/#c.NotebookApp.disable_check_xsrf = False/c.NotebookApp.disable_check_xsrf = True/" /root/.jupyter/jupyter_notebook_config.py 
 
-RUN sed -i -e "s/#c.NotebookApp.token = '<generated>'/c.NotebookApp.token = ''/" /root/.jupyter/jupyter_notebook_config.py && \
-
+RUN sed -i -e "s/#c.NotebookApp.token = '<generated>'/c.NotebookApp.token = ''/" /root/.jupyter/jupyter_notebook_config.py
+ 
 RUN export PYTHONPATH=.:/root/course
 
 WORKDIR /root/course
